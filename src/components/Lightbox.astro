@@ -1,0 +1,151 @@
+---
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/*.{jpeg,jpg}',
+  { eager: true }
+);
+
+const images = Object.keys(imageModules)
+  .sort()
+  .map((key) => imageModules[key].default);
+---
+
+<dialog id="lightbox">
+  <div class="lightbox-backdrop">
+    <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
+    <button class="lightbox-prev" type="button" aria-label="Previous">&lsaquo;</button>
+    <button class="lightbox-next" type="button" aria-label="Next">&rsaquo;</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+</dialog>
+
+<script define:vars={{ imageSrcs: images.map((img) => img.src) }}>
+  const dialog = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+  const buttons = document.querySelectorAll('.gallery-button');
+  let currentIndex = 0;
+
+  function open(index) {
+    currentIndex = index;
+    img.src = imageSrcs[currentIndex];
+    dialog.showModal();
+  }
+
+  function close() {
+    dialog.close();
+  }
+
+  function navigate(direction) {
+    currentIndex = (currentIndex + direction + imageSrcs.length) % imageSrcs.length;
+    img.src = imageSrcs[currentIndex];
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const index = parseInt(btn.dataset.index, 10);
+      open(index);
+    });
+  });
+
+  dialog.querySelector('.lightbox-close').addEventListener('click', close);
+  dialog.querySelector('.lightbox-prev').addEventListener('click', () => navigate(-1));
+  dialog.querySelector('.lightbox-next').addEventListener('click', () => navigate(1));
+
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog || e.target.classList.contains('lightbox-backdrop')) {
+      close();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!dialog.open) return;
+    if (e.key === 'ArrowLeft') navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
+  });
+
+  // Touch swipe support
+  let touchStartX = 0;
+  dialog.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  dialog.addEventListener('touchend', (e) => {
+    const diff = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(diff) > 50) {
+      navigate(diff > 0 ? -1 : 1);
+    }
+  });
+</script>
+
+<style>
+  dialog {
+    padding: 0;
+    border: none;
+    background: none;
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  .lightbox-backdrop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+  }
+
+  #lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next {
+    position: absolute;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .lightbox-close:hover,
+  .lightbox-prev:hover,
+  .lightbox-next:hover {
+    opacity: 1;
+  }
+
+  .lightbox-close {
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+
+  .lightbox-prev,
+  .lightbox-next {
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    line-height: 1;
+    padding: 0.5rem;
+  }
+
+  .lightbox-prev {
+    left: 1rem;
+  }
+
+  .lightbox-next {
+    right: 1rem;
+  }
+</style>

@@ -1,0 +1,40 @@
+:root {
+  --color-primary: #e8ca6f;
+  --color-primary-light: #f9ebd2;
+  --color-primary-dark: #B67A0E;
+  --color-background: #fcf7e9;
+  --color-text: #666;
+  --color-attention: #E37222;
+  --font-family: 'Open Sans', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

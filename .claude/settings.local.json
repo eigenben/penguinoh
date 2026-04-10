@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(magick identify:*)",
+      "Bash(npm view:*)",
+      "Bash(npm create:*)",
+      "Bash(magick mogrify:*)"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  image: ImageMetadata;
+  index: number;
+}
+
+const { image, index } = Astro.props;
+const isEager = index < 6;
+---
+
+<div class="gallery-item">
+  <button type="button" class="gallery-button" data-index={index}>
+    <Image
+      src={image}
+      alt=""
+      widths={[400, 600]}
+      sizes="(max-width: 300px) 100vw, (max-width: 950px) 33vw, 300px"
+      format="webp"
+      quality={80}
+      loading={isEager ? 'eager' : 'lazy'}
+      decoding={isEager ? 'sync' : 'async'}
+    />
+  </button>
+</div>
+
+<style>
+  .gallery-item {
+    position: relative;
+    background: #eee;
+    border-radius: 5px;
+    overflow: hidden;
+    aspect-ratio: 3 / 2;
+  }
+
+  .gallery-button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    background: none;
+  }
+
+  .gallery-button :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  }
+
+  .gallery-button:hover :global(img) {
+    opacity: 0.4;
+    transform: scale(1.1);
+  }
+</style>
