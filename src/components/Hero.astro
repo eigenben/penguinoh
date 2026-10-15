@@ -1,0 +1,206 @@
+---
+import { Image } from 'astro:assets';
+import { photos } from '../data/photos';
+import passportPhoto from '../assets/images/IMG_7256.jpeg';
+---
+
+<section class="hero container">
+  <div class="intro">
+    <p class="eyebrow">Official travel document of a stuffed penguin</p>
+    <h1>The not-so-<span class="nowrap">flightless bird.</span></h1>
+    <p class="lede">
+      Penguinoh Waddles is a small plush penguin with a big passport. {photos.length} photos, every one taken on
+      location — from the moai of Easter Island to the inside of a freezer.
+    </p>
+    <div class="actions">
+      <a class="button primary" href="#stamps">Flip through the stamps</a>
+      <a class="button secondary" href="#daydreams">See where he's dreaming of</a>
+    </div>
+  </div>
+
+  <div class="passport">
+    <div class="passport-header">
+      <span>PASSPORT · PASSEPORT</span>
+      <span>No. PW-000001</span>
+    </div>
+    <div class="passport-body">
+      <Image
+        src={passportPhoto}
+        alt="Penguinoh close up in front of the Eiffel Tower"
+        widths={[200, 400]}
+        sizes="200px"
+        format="webp"
+        loading="eager"
+      />
+      <dl>
+        <div><dt>SURNAME</dt><dd class="strong">WADDLES</dd></div>
+        <div><dt>GIVEN NAME</dt><dd class="strong">PENGUINOH</dd></div>
+        <div><dt>SPECIES</dt><dd>Penguin, stuffed</dd></div>
+        <div><dt>DISTINGUISHING FEATURES</dt><dd>Slightly squashed beak. Unflappable.</dd></div>
+      </dl>
+    </div>
+    <p class="mrz" aria-hidden="true">
+      P&lt;ANTWADDLES&lt;&lt;PENGUINOH&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br />PW0000001&lt;9ANT&lt;FLUFFY&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;04
+    </p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px 48px;
+    align-items: center;
+  }
+
+  .intro {
+    flex: 1 1 440px;
+    min-width: 0;
+  }
+
+  .eyebrow {
+    margin-bottom: 10px;
+    color: var(--ink-red);
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(38px, 4.6vw, 64px);
+    line-height: 1.04;
+    color: var(--color-navy);
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .lede {
+    margin-top: 14px;
+    font-size: 18px;
+    line-height: 1.55;
+    max-width: 540px;
+  }
+
+  .actions {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .primary {
+    background: var(--color-navy);
+    color: var(--color-paper);
+  }
+
+  .primary:hover {
+    background: var(--ink-red);
+    color: #fff;
+  }
+
+  .secondary {
+    border: 2px solid var(--color-navy);
+    color: var(--color-navy);
+  }
+
+  .secondary:hover {
+    background: var(--color-navy);
+    color: var(--color-paper);
+  }
+
+  .passport {
+    flex: 1 1 400px;
+    min-width: 0;
+    max-width: 540px;
+    background: var(--color-paper-light);
+    border: 1px solid var(--color-line);
+    border-radius: 10px;
+    box-shadow: 0 30px 60px -30px rgba(28, 37, 65, 0.45);
+    padding: 22px 24px;
+    transform: rotate(1.2deg);
+  }
+
+  .passport-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    border-bottom: 1px solid var(--color-line);
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+  }
+
+  .passport-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .passport-body img {
+    width: 160px;
+    height: 200px;
+    object-fit: cover;
+    object-position: 30% 50%;
+    border-radius: 4px;
+    filter: saturate(0.9);
+  }
+
+  dl {
+    flex: 1 1 200px;
+    display: grid;
+    gap: 8px;
+    font-size: 15px;
+  }
+
+  dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+  }
+
+  dd {
+    margin-top: 2px;
+  }
+
+  dd.strong {
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+    color: var(--color-navy);
+  }
+
+  .mrz {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--color-navy);
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding-block: 20px 24px;
+      gap: 24px;
+    }
+
+    .nowrap {
+      white-space: normal;
+    }
+
+    .passport {
+      padding: 20px;
+      transform: none;
+    }
+  }
+</style>

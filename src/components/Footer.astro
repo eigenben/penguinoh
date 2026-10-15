@@ -2,14 +2,30 @@
 ---
 
 <footer>
-  <p>&copy; Penguinoh Waddles</p>
+  <div class="container inner">
+    <p>&copy; Penguinoh Waddles. The photos are real. The penguin is stuffed.</p>
+    <p class="mono">This passport remains the property of Penguinoh</p>
+  </div>
 </footer>
 
 <style>
   footer {
-    text-align: center;
-    padding: 2rem 1rem;
-    color: var(--color-text);
-    font-size: 0.85rem;
+    background: var(--color-navy-deep);
+    color: #A9B0C6;
+  }
+
+  .inner {
+    padding-block: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 14px;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 </style>

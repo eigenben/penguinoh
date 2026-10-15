@@ -1,0 +1,130 @@
+---
+import { Image } from 'astro:assets';
+import type { Photo } from '../data/photos';
+
+interface Props {
+  photo: Photo;
+  index: number;
+  /** Hidden until the infinite scroll reaches it. */
+  pending: boolean;
+}
+
+const { photo, index, pending } = Astro.props;
+const label = photo.place ? `${photo.place}${photo.detail ? `, ${photo.detail}` : ''}` : `Entry ${photo.entry}`;
+---
+
+<li class:list={['visa', { pending }]}>
+  <button type="button" class="gallery-button" data-index={index} aria-label={`Open photo: ${label}`}>
+    <span class="photo">
+      <Image
+        src={photo.image}
+        alt=""
+        widths={[400, 600]}
+        sizes="(max-width: 640px) 90vw, 280px"
+        format="webp"
+        quality={80}
+        loading="lazy"
+        decoding="async"
+      />
+    </span>
+    <span class="caption">
+      {photo.place && <span class="place">{photo.place}</span>}
+      <span class="meta">
+        {photo.detail && <span class="detail">{photo.detail}</span>}
+        <span class="entry">ENTRY {photo.entry}</span>
+      </span>
+    </span>
+  </button>
+</li>
+
+<style>
+  .visa {
+    list-style: none;
+  }
+
+  :global(.js) .visa.pending {
+    display: none;
+  }
+
+  .visa:nth-child(odd) {
+    transform: rotate(-0.6deg);
+  }
+
+  .visa:nth-child(even) {
+    transform: rotate(0.5deg);
+  }
+
+  .gallery-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    color: var(--color-ink);
+    background: var(--color-paper-light);
+    border: 1px solid #DCD3BC;
+    border-radius: 6px;
+    padding: 10px 10px 12px;
+    cursor: zoom-in;
+    box-shadow: 0 10px 24px -16px rgba(28, 37, 65, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .gallery-button:hover {
+    transform: translateY(-4px) rotate(-0.4deg);
+    box-shadow: 0 18px 30px -18px rgba(28, 37, 65, 0.6);
+  }
+
+  .photo {
+    position: relative;
+    display: block;
+  }
+
+  .photo :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 3px;
+    background: var(--color-paper-well);
+  }
+
+  .caption {
+    display: block;
+    padding: 10px 2px 0;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2px 8px;
+    margin-top: 2px;
+  }
+
+  .entry {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: #6A6F80;
+  }
+
+  .place {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.2;
+    color: var(--color-navy);
+  }
+
+  .detail {
+    font-size: 13px;
+    color: #4A4F60;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-button {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,201 @@
+---
+import { Image } from 'astro:assets';
+import { daydreams, generatorRepo, generatorUrl } from '../data/daydreams';
+---
+
+<section id="daydreams">
+  <div class="container inner">
+    <div class="heading">
+      <div class="copy">
+        <p class="eyebrow">Visa applications · pending</p>
+        <h2>Daydreams</h2>
+        <p class="lede">
+          These ones <strong>aren't real</strong>. We trained a small AI model on 52 of Penguinoh's real photos so he can
+          visit places he hasn't been yet — or styles he'll never be drawn in.
+        </p>
+      </div>
+      <a class="button cta" href={generatorUrl}>
+        Apply for his next visa on Hugging Face
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg>
+      </a>
+    </div>
+
+    <ul class="grid">
+      {daydreams.map((dream) => (
+        <li>
+          <figure>
+            <div class="frame">
+              <Image
+                src={dream.image}
+                alt={dream.alt}
+                widths={[200, 400]}
+                sizes="(max-width: 640px) 50vw, 200px"
+                format="webp"
+                quality={80}
+                loading="lazy"
+              />
+            </div>
+            <figcaption>“{dream.prompt}”</figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+
+    <div class="tip">
+      <p>
+        Try it yourself: on the model page, call him <code>pngnh the Stuffed Penguin</code> — e.g.
+        <span class="example">a photo of pngnh the Stuffed Penguin surfing a big wave in Hawaii</span>.
+      </p>
+      <a href={generatorUrl}>{generatorRepo}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  #daydreams {
+    background: var(--color-navy);
+    color: #EDE6D3;
+  }
+
+  .inner {
+    padding-block: 56px;
+  }
+
+  .heading {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 48px;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .copy {
+    flex: 1 1 520px;
+    min-width: 0;
+  }
+
+  .eyebrow {
+    margin-bottom: 6px;
+    color: var(--color-gold);
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1.05;
+    color: var(--color-paper);
+  }
+
+  .lede {
+    margin-top: 12px;
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 600px;
+  }
+
+  .lede strong {
+    color: var(--color-paper);
+  }
+
+  .cta {
+    background: var(--color-gold);
+    color: var(--color-navy);
+    font-weight: 700;
+    min-height: 56px;
+    padding-inline: 28px;
+  }
+
+  .cta:hover {
+    background: var(--color-paper);
+  }
+
+  .grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+    gap: 16px;
+  }
+
+  figure {
+    height: 100%;
+    background: var(--color-navy-raised);
+    border: 1.5px dashed #5A6A9E;
+    border-radius: 8px;
+    padding: 8px;
+  }
+
+  .frame {
+    position: relative;
+  }
+
+  .frame :global(img) {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  figcaption {
+    padding: 8px 2px 2px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    color: #C8CEE0;
+  }
+
+  .tip {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    align-items: center;
+    padding: 18px 24px;
+    border: 1px solid #3A4672;
+    border-radius: 8px;
+  }
+
+  .tip p {
+    flex: 1 1 420px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  code {
+    font-family: var(--font-mono);
+    color: var(--color-gold);
+    background: var(--color-navy-raised);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  .example {
+    font-family: var(--font-mono);
+    color: var(--color-paper);
+  }
+
+  .tip a {
+    color: var(--color-gold);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .tip a:hover {
+    color: var(--color-paper);
+  }
+
+  @media (max-width: 640px) {
+    .inner {
+      padding-block: 40px;
+    }
+
+    h2 {
+      font-size: 34px;
+    }
+
+    .tip {
+      padding: 20px;
+    }
+  }
+</style>

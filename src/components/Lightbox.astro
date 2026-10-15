@@ -1,12 +1,12 @@
 ---
-const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/images/*.{jpeg,jpg}',
-  { eager: true }
-);
+import { photos } from '../data/photos';
 
-const images = Object.keys(imageModules)
-  .sort()
-  .map((key) => imageModules[key].default);
+const slides = photos.map((photo) => ({
+  src: photo.image.src,
+  caption: [photo.place, photo.detail].filter(Boolean).join(' · '),
+  alt: photo.place ? `Penguinoh at ${[photo.place, photo.detail].filter(Boolean).join(', ')}` : 'Penguinoh on his travels',
+  entry: photo.entry,
+}));
 ---
 
 <dialog id="lightbox">
@@ -14,19 +14,30 @@ const images = Object.keys(imageModules)
     <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
     <button class="lightbox-prev" type="button" aria-label="Previous">&lsaquo;</button>
     <button class="lightbox-next" type="button" aria-label="Next">&rsaquo;</button>
-    <img id="lightbox-img" src="" alt="" />
+    <figure class="lightbox-figure">
+      <img id="lightbox-img" src="" alt="" />
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
   </div>
 </dialog>
 
-<script define:vars={{ imageSrcs: images.map((img) => img.src) }}>
+<script define:vars={{ slides }}>
   const dialog = document.getElementById('lightbox');
   const img = document.getElementById('lightbox-img');
+  const caption = document.getElementById('lightbox-caption');
   const buttons = document.querySelectorAll('.gallery-button');
   let currentIndex = 0;
 
-  function open(index) {
+  function show(index) {
+    const slide = slides[index];
     currentIndex = index;
-    img.src = imageSrcs[currentIndex];
+    img.src = slide.src;
+    img.alt = slide.alt;
+    caption.textContent = slide.caption ? `Entry ${slide.entry} · ${slide.caption}` : `Entry ${slide.entry}`;
+  }
+
+  function open(index) {
+    show(index);
     dialog.showModal();
   }
 
@@ -35,8 +46,7 @@ const images = Object.keys(imageModules)
   }
 
   function navigate(direction) {
-    currentIndex = (currentIndex + direction + imageSrcs.length) % imageSrcs.length;
-    img.src = imageSrcs[currentIndex];
+    show((currentIndex + direction + slides.length) % slides.length);
   }
 
   buttons.forEach((btn) => {
@@ -51,7 +61,7 @@ const images = Object.keys(imageModules)
   dialog.querySelector('.lightbox-next').addEventListener('click', () => navigate(1));
 
   dialog.addEventListener('click', (e) => {
-    if (e.target === dialog || e.target.classList.contains('lightbox-backdrop')) {
+    if (e.target === dialog || e.target.classList.contains('lightbox-backdrop') || e.target.classList.contains('lightbox-figure')) {
       close();
     }
   });
@@ -87,7 +97,7 @@ const images = Object.keys(imageModules)
   }
 
   dialog::backdrop {
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(20, 27, 49, 0.94);
   }
 
   .lightbox-backdrop {
@@ -99,11 +109,29 @@ const images = Object.keys(imageModules)
     position: relative;
   }
 
+  .lightbox-figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
   #lightbox-img {
-    max-width: 90vw;
-    max-height: 90vh;
+    max-width: 88vw;
+    max-height: 82vh;
     object-fit: contain;
     border-radius: 4px;
+    border: 10px solid var(--color-paper-light);
+  }
+
+  #lightbox-caption {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-paper);
+    text-align: center;
+    padding-inline: 16px;
   }
 
   .lightbox-close,

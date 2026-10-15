@@ -1,11 +1,30 @@
 :root {
-  --color-primary: #e8ca6f;
-  --color-primary-light: #f9ebd2;
-  --color-primary-dark: #B67A0E;
-  --color-background: #fcf7e9;
-  --color-text: #666;
-  --color-attention: #E37222;
-  --font-family: 'Open Sans', sans-serif;
+  --color-navy: #1C2541;
+  --color-navy-deep: #141B31;
+  --color-navy-raised: #263056;
+  --color-paper: #F3EEE2;
+  --color-paper-light: #FBF8F0;
+  --color-paper-well: #EDE6D3;
+  --color-line: #D8CFB8;
+  --color-ink: #1E2233;
+  --color-muted: #5B6070;
+  --color-gold: #C9A24B;
+  --color-dream: #8FB0F0;
+  --ink-red: #B23A2E;
+  --ink-blue: #2B4C9B;
+  --ink-green: #2F6B4A;
+  --ink-violet: #6A3E8C;
+  --font-display: 'Young Serif', Georgia, serif;
+  --font-body: 'Figtree', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --page-width: 1240px;
+  --gutter: 32px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 16px;
+  }
 }
 
 *,
@@ -17,15 +36,21 @@
 }
 
 html {
-  font-family: var(--font-family);
-  color: var(--color-text);
-  background-color: var(--color-background);
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background-color: var(--color-paper);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
+  /* Passport-page guilloche */
+  background-color: var(--color-paper);
+  background-image:
+    repeating-radial-gradient(circle at 0 0, transparent 0, transparent 9px, rgba(28, 37, 65, 0.045) 10px, transparent 11px),
+    repeating-radial-gradient(circle at 100% 100%, transparent 0, transparent 9px, rgba(178, 58, 46, 0.04) 10px, transparent 11px);
 }
 
 img {
@@ -36,5 +61,41 @@ img {
 
 a {
   color: inherit;
+}
+
+.container {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 26px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 16px;
   text-decoration: none;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ink-red);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
